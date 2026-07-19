@@ -1,21 +1,11 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import {
-  FaUser,
-  FaPhone,
-  FaEnvelope,
-  FaMapMarkerAlt,
-  FaBook
-} from "react-icons/fa";
 import toast from "react-hot-toast";
 
 import { supabase } from "../supabase";
+import { sendEmails } from "../email";
 
-import GlassCard from "../components/GlassCard";
-import InputField from "../components/InputField";
-import PrimaryButton from "../components/PrimaryButton";
-
-import "../assets/css/auth.css";
+import "../assets/css/RegistrationForm.css";
 
 function RegistrationForm() {
 
@@ -23,69 +13,21 @@ function RegistrationForm() {
 
     const [loading, setLoading] = useState(false);
 
-    const [user, setUser] = useState(null);
-
     const [formData, setFormData] = useState({
 
         full_name: "",
-
         father_name: "",
-
         email: "",
-
         phone: "",
-
-        dob: "",
-
-        gender: "",
-
-        cnic: "",
-
-        address: "",
-
-        course: "",
-
-        qualification: ""
+        course: ""
 
     });
-
-    useEffect(() => {
-
-        async function loadUser() {
-
-            const {
-
-                data: { user }
-
-            } = await supabase.auth.getUser();
-
-            if (!user) {
-
-                navigate("/login");
-
-                return;
-
-            }
-
-            setUser(user);
-
-            setFormData(prev => ({
-                ...prev,
-                email: user.email
-            }));
-
-        }
-
-        loadUser();
-
-    }, [navigate]);
 
     const handleChange = (e) => {
 
         setFormData({
 
             ...formData,
-
             [e.target.name]: e.target.value
 
         });
@@ -98,27 +40,25 @@ function RegistrationForm() {
 
         setLoading(true);
 
-        // Prevent duplicate registration
+        // Get logged in user
 
-        const { data: existing } = await supabase
+        const {
 
-            .from("students")
+            data: { user }
 
-            .select("*")
+        } = await supabase.auth.getUser();
 
-            .eq("user_id", user.id)
+        if (!user) {
 
-            .maybeSingle();
-
-        if (existing) {
-
-            toast.error("You have already submitted the form.");
+            toast.error("Please login first.");
 
             setLoading(false);
 
             return;
 
         }
+
+        // Save registration
 
         const { error } = await supabase
 
@@ -128,7 +68,15 @@ function RegistrationForm() {
 
                 user_id: user.id,
 
-                ...formData
+                full_name: formData.full_name,
+
+                father_name: formData.father_name,
+
+                email: formData.email,
+
+                phone: formData.phone,
+
+                course: formData.course
 
             });
 
@@ -142,7 +90,21 @@ function RegistrationForm() {
 
         }
 
-        toast.success("Registration Submitted Successfully!");
+        // Send Emails
+
+        const emailSent = await sendEmails(formData);
+
+        if (!emailSent) {
+
+            toast.error("Registration saved but email could not be sent.");
+
+        }
+
+        else {
+
+            toast.success("Registration submitted successfully!");
+
+        }
 
         setLoading(false);
 
@@ -152,31 +114,17 @@ function RegistrationForm() {
 
     return (
 
-        <div className="auth-page">
+        <div className="registration-page">
 
-            <GlassCard>
+            <div className="glass-card">
 
-                <div className="auth-header">
+                <h1>Student Registration</h1>
 
-                    <h1>Student Registration</h1>
+                <form onSubmit={handleSubmit}>
 
-                    <p>
+                    <input
 
-                        Complete your registration form
-
-                    </p>
-
-                </div>
-
-                <form
-
-                    className="auth-form"
-
-                    onSubmit={handleSubmit}
-
-                >
-
-                    <InputField
+                        type="text"
 
                         name="full_name"
 
@@ -186,13 +134,13 @@ function RegistrationForm() {
 
                         onChange={handleChange}
 
-                        icon={<FaUser />}
-
                         required
 
                     />
 
-                    <InputField
+                    <input
+
+                        type="text"
 
                         name="father_name"
 
@@ -202,13 +150,11 @@ function RegistrationForm() {
 
                         onChange={handleChange}
 
-                        icon={<FaUser />}
-
                         required
 
                     />
 
-                    <InputField
+                    <input
 
                         type="email"
 
@@ -220,13 +166,13 @@ function RegistrationForm() {
 
                         onChange={handleChange}
 
-                        icon={<FaEnvelope />}
-
                         required
 
                     />
 
-                    <InputField
+                    <input
+
+                        type="text"
 
                         name="phone"
 
@@ -236,83 +182,13 @@ function RegistrationForm() {
 
                         onChange={handleChange}
 
-                        icon={<FaPhone />}
-
                         required
 
                     />
 
-                    <InputField
+                    <input
 
-                        type="date"
-
-                        name="dob"
-
-                        value={formData.dob}
-
-                        onChange={handleChange}
-
-                        required
-
-                    />
-
-                    <div className="input-container">
-
-                        <select
-
-                            className="custom-input"
-
-                            name="gender"
-
-                            value={formData.gender}
-
-                            onChange={handleChange}
-
-                            required
-
-                        >
-
-                            <option value="">Select Gender</option>
-
-                            <option value="Male">Male</option>
-
-                            <option value="Female">Female</option>
-
-                        </select>
-
-                    </div>
-
-                    <InputField
-
-                        name="cnic"
-
-                        placeholder="CNIC"
-
-                        value={formData.cnic}
-
-                        onChange={handleChange}
-
-                        required
-
-                    />
-
-                    <InputField
-
-                        name="address"
-
-                        placeholder="Address"
-
-                        value={formData.address}
-
-                        onChange={handleChange}
-
-                        icon={<FaMapMarkerAlt />}
-
-                        required
-
-                    />
-
-                    <InputField
+                        type="text"
 
                         name="course"
 
@@ -322,27 +198,11 @@ function RegistrationForm() {
 
                         onChange={handleChange}
 
-                        icon={<FaBook />}
-
                         required
 
                     />
 
-                    <InputField
-
-                        name="qualification"
-
-                        placeholder="Qualification"
-
-                        value={formData.qualification}
-
-                        onChange={handleChange}
-
-                        required
-
-                    />
-
-                    <PrimaryButton
+                    <button
 
                         type="submit"
 
@@ -354,17 +214,21 @@ function RegistrationForm() {
 
                             loading
 
-                            ? "Submitting..."
+                            ?
 
-                            : "Submit Registration"
+                            "Submitting..."
+
+                            :
+
+                            "Submit Registration"
 
                         }
 
-                    </PrimaryButton>
+                    </button>
 
                 </form>
 
-            </GlassCard>
+            </div>
 
         </div>
 

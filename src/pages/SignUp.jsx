@@ -133,10 +133,22 @@ function Signup() {
 
         if (data.user) {
 
-            const { error: profileError } =  await supabase.auth.signUp({
-            email,
-            password
-        });
+            const { error: profileError } = await supabase.auth.signUp({
+                email,
+                password
+            });
+
+            if (profileError) {
+
+                toast.error(profileError.message);
+
+                setLoading(false);
+
+                return;
+
+            }
+
+        }
 
             if (profileError) {
 
