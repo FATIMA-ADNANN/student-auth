@@ -1,39 +1,31 @@
 import emailjs from "@emailjs/browser";
 
 export const sendEmails = async (formData) => {
-  try {
-    const studentParams = {
-      user_name: formData.full_name,
-      user_email: formData.email,
-      course: formData.course,
-    };
+  const params = {
+    user_name: formData.full_name,
+    user_email: formData.email,
+    course: formData.course,
+  };
 
-    // Email to Student
+  try {
     await emailjs.send(
       "service_zh6iurt",
       "template_zqrpau9",
-      studentParams,
+      params,
       "whx0UgQQo2wS5Dkqi"
     );
-
-    // Email to Admin
-    const adminParams = {
-      user_name: formData.full_name,
-      user_email: formData.email,
-      course: formData.course,
-      admin_email: "youradmin@gmail.com", // Replace with your admin email
-    };
 
     await emailjs.send(
       "service_zh6iurt",
       "template_awfytic",
-      adminParams,
+      params,
       "whx0UgQQo2wS5Dkqi"
     );
 
     return true;
+
   } catch (error) {
-    console.error("EmailJS Error:", error);
+    console.error(error);
     return false;
   }
 };

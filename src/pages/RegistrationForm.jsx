@@ -5,7 +5,11 @@ import toast from "react-hot-toast";
 import { supabase } from "../supabase";
 import { sendEmails } from "../email";
 
-import "../assets/css/RegistrationForm.css";
+import GlassCard from "../components/GlassCard";
+import InputField from "../components/InputField";
+import PrimaryButton from "../components/PrimaryButton";
+
+import "../assets/css/auth.css";
 
 function RegistrationForm() {
 
@@ -40,8 +44,6 @@ function RegistrationForm() {
 
         setLoading(true);
 
-        // Get logged in user
-
         const {
 
             data: { user }
@@ -57,8 +59,6 @@ function RegistrationForm() {
             return;
 
         }
-
-        // Save registration
 
         const { error } = await supabase
 
@@ -90,19 +90,17 @@ function RegistrationForm() {
 
         }
 
-        // Send Emails
-
         const emailSent = await sendEmails(formData);
 
-        if (!emailSent) {
+        if (emailSent) {
 
-            toast.error("Registration saved but email could not be sent.");
+            toast.success("Registration submitted successfully!");
 
         }
 
         else {
 
-            toast.success("Registration submitted successfully!");
+            toast.error("Registration saved, but emails could not be sent.");
 
         }
 
@@ -114,17 +112,27 @@ function RegistrationForm() {
 
     return (
 
-        <div className="registration-page">
+        <div className="auth-page">
 
-            <div className="glass-card">
+            <GlassCard>
 
-                <h1>Student Registration</h1>
+                <div className="auth-header">
 
-                <form onSubmit={handleSubmit}>
+                    <h1>Student Registration</h1>
 
-                    <input
+                    <p>Complete your registration details</p>
 
-                        type="text"
+                </div>
+
+                <form
+
+                    className="auth-form"
+
+                    onSubmit={handleSubmit}
+
+                >
+
+                    <InputField
 
                         name="full_name"
 
@@ -138,9 +146,7 @@ function RegistrationForm() {
 
                     />
 
-                    <input
-
-                        type="text"
+                    <InputField
 
                         name="father_name"
 
@@ -154,7 +160,7 @@ function RegistrationForm() {
 
                     />
 
-                    <input
+                    <InputField
 
                         type="email"
 
@@ -170,9 +176,7 @@ function RegistrationForm() {
 
                     />
 
-                    <input
-
-                        type="text"
+                    <InputField
 
                         name="phone"
 
@@ -186,9 +190,7 @@ function RegistrationForm() {
 
                     />
 
-                    <input
-
-                        type="text"
+                    <InputField
 
                         name="course"
 
@@ -202,7 +204,7 @@ function RegistrationForm() {
 
                     />
 
-                    <button
+                    <PrimaryButton
 
                         type="submit"
 
@@ -214,21 +216,17 @@ function RegistrationForm() {
 
                             loading
 
-                            ?
+                                ? "Submitting..."
 
-                            "Submitting..."
-
-                            :
-
-                            "Submit Registration"
+                                : "Submit Registration"
 
                         }
 
-                    </button>
+                    </PrimaryButton>
 
                 </form>
 
-            </div>
+            </GlassCard>
 
         </div>
 
