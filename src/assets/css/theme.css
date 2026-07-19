@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Raleway:wght@300;400;500;600;700;800&display=swap');
 
 /* ===========================
-   Global Variables
+   Variables
 =========================== */
 
 :root{
@@ -23,12 +23,7 @@
 
     --glass-border:rgba(255,255,255,.30);
 
-    --shadow:
-    0 15px 35px rgba(41,41,102,.18);
-
-    --radius-card:35px;
-
-    --radius-input:40px;
+    --shadow:0 15px 35px rgba(41,41,102,.18);
 
     --transition:.3s ease;
 
@@ -60,11 +55,7 @@ body{
 
     min-height:100vh;
 
-    display:flex;
-
-    justify-content:center;
-
-    align-items:center;
+    margin:0;
 
 }
 
@@ -106,9 +97,9 @@ p{
 
     color:var(--primary);
 
-    font-weight:500;
-
     font-size:18px;
+
+    font-weight:500;
 
 }
 
@@ -122,7 +113,7 @@ a{
 
     color:var(--primary-dark);
 
-    transition:var(--transition);
+    transition:.3s;
 
 }
 
@@ -133,38 +124,14 @@ a:hover{
 }
 
 /* ===========================
-   Animations
-=========================== */
-
-@keyframes fade{
-
-    from{
-
-        opacity:0;
-
-        transform:translateY(25px);
-
-    }
-
-    to{
-
-        opacity:1;
-
-        transform:none;
-
-    }
-
-}
-
-/* ===========================
    Glass Card
 =========================== */
 
 .glass-card{
 
-    width:650px;
+    width:100%;
 
-    min-height:720px;
+    max-width:650px;
 
     margin:auto;
 
@@ -180,15 +147,12 @@ a:hover{
 
     border:1px solid rgba(255,255,255,.30);
 
-    box-shadow:
-    0 15px 35px rgba(41,41,102,.18);
-
-    animation:fade .5s ease;
+    box-shadow:0 15px 35px rgba(41,41,102,.18);
 
 }
 
 /* ===========================
-   Input Field
+   Inputs
 =========================== */
 
 .input-container{
@@ -207,9 +171,7 @@ a:hover{
 
     height:60px;
 
-    padding-left:55px;
-
-    padding-right:55px;
+    padding:0 55px;
 
     border:none;
 
@@ -224,13 +186,6 @@ a:hover{
     color:var(--primary-dark);
 
     font-size:17px;
-
-    font-weight:500;
-
-    box-shadow:
-    0 6px 15px rgba(41,41,102,.15);
-
-    transition:.3s;
 
 }
 
@@ -258,8 +213,6 @@ a:hover{
 
     color:var(--primary);
 
-    font-size:18px;
-
 }
 
 .eye-btn{
@@ -272,20 +225,16 @@ a:hover{
 
     transform:translateY(-50%);
 
-    border:none;
-
     background:none;
 
+    border:none;
+
     cursor:pointer;
-
-    color:var(--primary);
-
-    font-size:18px;
 
 }
 
 /* ===========================
-   Primary Button
+   Button
 =========================== */
 
 .primary-btn{
@@ -300,11 +249,7 @@ a:hover{
 
     border-radius:40px;
 
-    background:linear-gradient(
-        135deg,
-        #5C5C99,
-        #4B4B8F
-    );
+    background:linear-gradient(135deg,#5C5C99,#4B4B8F);
 
     color:white;
 
@@ -312,36 +257,14 @@ a:hover{
 
     font-weight:700;
 
-    letter-spacing:.5px;
-
     cursor:pointer;
 
-    transition:all .3s ease;
-
-    box-shadow:
-    0 10px 20px rgba(92,92,153,.30);
+    transition:.3s;
 
 }
 
 .primary-btn:hover{
 
-    transform:translateY(-3px);
-
-    box-shadow:
-    0 15px 25px rgba(92,92,153,.40);
-
-}
-
-.primary-btn:active{
-
-    transform:scale(.98);
-
-}
-
-.primary-btn:disabled{
-
-    opacity:.6;
-
-    cursor:not-allowed;
+    transform:translateY(-2px);
 
 }

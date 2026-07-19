@@ -1,7 +1,5 @@
 .auth-page{
 
-    width:100%;
-
     min-height:100vh;
 
     display:flex;
@@ -10,7 +8,7 @@
 
     align-items:center;
 
-    padding:40px;
+    padding:25px;
 
 }
 
@@ -40,6 +38,8 @@
 
     flex-direction:column;
 
+    gap:22px;
+
 }
 
 .auth-links{
@@ -58,14 +58,68 @@
 
 .auth-links a{
 
-    font-weight:700;
-
     color:var(--primary-dark);
+
+    font-weight:700;
 
 }
 
-.auth-links a:hover{
+/* ===========================
+   Mobile
+=========================== */
 
-    color:var(--primary);
+@media (max-width:768px){
+
+    .auth-page{
+
+        padding:15px;
+
+        align-items:flex-start;
+
+        padding-top:40px;
+
+    }
+
+    .glass-card{
+
+        width:100%;
+
+        max-width:420px;
+
+        padding:28px 20px;
+
+        border-radius:25px;
+
+    }
+
+    .auth-header h1{
+
+        font-size:34px;
+
+    }
+
+    .auth-header p{
+
+        font-size:15px;
+
+    }
+
+    .custom-input{
+
+        height:54px;
+
+        font-size:15px;
+
+        padding:0 48px;
+
+    }
+
+    .primary-btn{
+
+        height:54px;
+
+        font-size:16px;
+
+    }
 
 }
